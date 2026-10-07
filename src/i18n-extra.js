@@ -23,7 +23,7 @@ export const fr = {
   storiesT: 'Témoignages d’étudiants', storiesS: 'Écoutez nos étudiants et nos diplômés.', mapT: 'Retrouvez-nous sur la carte',
   faqT: 'Questions fréquentes', faqS: 'Des réponses rapides avant de candidater.',
   faqs: [
-    ['Où se trouve PASCAL Academy ?', 'Nous sommes à Nyabyondo, Rulindo, au Rwanda. Vous pouvez nous trouver sur la carte dans la section Contact.'],
+    ['Où se trouve PASCAL Academy ?', 'Nous sommes à Nyabyondo (Rulindo) et à Kacyiru (Kigali), au Rwanda. Vous pouvez nous trouver sur la carte dans la section Contact.'],
     ['Comment candidater ?', 'Remplissez le formulaire de cette page et appuyez sur le bouton WhatsApp. Votre candidature s’ouvre dans WhatsApp, prête à être envoyée à notre équipe d’admission, qui vous répondra.'],
     ['Combien d’étudiants dans la première promotion ?', 'La première promotion est limitée à 10 étudiants seulement. Nous vous conseillons donc de vous inscrire tôt.'],
     ['Quelles formations proposez-vous ?', 'Hôtellerie et service client, service restauration et boissons, fabrication de jus, fabrication de savon, informatique, photographie, coiffure, langues, pâtisserie, et compétences de vie et développement personnel. Vous pouvez en choisir 3 maximum sur le formulaire.'],
@@ -56,7 +56,7 @@ export const sw = {
   storiesT: 'Hadithi za Wanafunzi', storiesS: 'Sikia kutoka kwa wanafunzi na wahitimu wetu.', mapT: 'Tupate kwenye ramani',
   faqT: 'Maswali Yanayoulizwa Mara kwa Mara', faqS: 'Majibu ya haraka kabla ya kuomba.',
   faqs: [
-    ['PASCAL Academy iko wapi?', 'Tuko Nyabyondo, Rulindo, nchini Rwanda. Unaweza kutupata kwenye ramani katika sehemu ya Wasiliana.'],
+    ['PASCAL Academy iko wapi?', 'Tuko Nyabyondo (Rulindo) na Kacyiru (Kigali), nchini Rwanda. Unaweza kutupata kwenye ramani katika sehemu ya Wasiliana.'],
     ['Ninawezaje kuomba?', 'Jaza fomu iliyo kwenye ukurasa huu kisha bonyeza kitufe cha WhatsApp. Ombi lako litafunguka kwenye WhatsApp, tayari kutumwa kwa timu yetu ya udahili, nao watakujibu.'],
     ['Awamu ya kwanza itakuwa na wanafunzi wangapi?', 'Awamu ya kwanza ina wanafunzi 10 pekee, kwa hiyo tunakushauri ujisajili mapema.'],
     ['Mnatoa kozi gani?', 'Ukarimu na Huduma kwa Wateja, Huduma ya Chakula na Vinywaji, Utengenezaji wa Juisi, Utengenezaji wa Sabuni, Kompyuta, Upigaji Picha, Mitindo ya Nywele, Lugha, Keki na Maandazi, na Stadi za Maisha na Maendeleo Binafsi. Unaweza kuchagua hadi 3 kwenye fomu.'],

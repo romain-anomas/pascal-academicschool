@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { IMG, SITE, COURSES, COURSE_INFO, T, LANGS } from './data.js'
 import { TESTIMONIALS } from './testimonials.js'
+import { EXTRA } from './extra.js'
 
 const waNum = (n) => { const d = String(n).replace(/\D/g, ''); return d.startsWith('0') ? '250' + d.slice(1) : d }
 const PHONE_RE = /^(?:\+?250|0)?7[2389]\d{7}$/
@@ -35,12 +36,12 @@ function LangSwitch({ t, lang, setLang }) {
 }
 
 function Nav({ t, lang, setLang }) {
-  const [open, setOpen] = useState(false); const ids = ['courses', 'why', 'gallery', 'faq', 'apply', 'contact']
+  const [open, setOpen] = useState(false); const ids = ['top', 'courses', 'why', 'gallery', 'faq', 'apply', 'contact']
   return (
     <header className="nav"><div className="wrap nav-in">
       <a href="#top" className="brand"><img src={IMG.logo} alt="PASCAL logo" /><span><b>PASCAL</b><small>Practical Skills &amp; Hospitality Academy</small></span></a>
       <nav className={open ? 'open' : ''}>
-        {ids.map((id, i) => <a key={id} href={`#${id}`} onClick={() => setOpen(false)}>{t.nav[i]}</a>)}
+        {ids.map((id, i) => <a key={id} href={`#${id}`} className={id === 'top' ? 'home' : ''} onClick={() => setOpen(false)}>{id === 'top' && <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3 2 12h3v8h5v-5h4v5h5v-8h3L12 3z" /></svg>}{t.nav[i]}</a>)}
       </nav>
       <div className="nav-r">
         <LangSwitch t={t} lang={lang} setLang={setLang} />
@@ -50,7 +51,42 @@ function Nav({ t, lang, setLang }) {
   )
 }
 
-function Hero({ t }) {
+function Ticker({ t, lang }) {
+  const items = [...t.ticker.slice(0, 3), ...COURSES.map((c) => c[lang]), t.ticker[3]]
+  return (
+    <div className="ribbon ticker" aria-label={t.ticker.join('. ')}><div className="tr">
+      {[0, 1].map((k) => <div className="tr-set" key={k} aria-hidden="true">{items.map((x, i) => <span key={i}>{x}<em>✦</em></span>)}</div>)}
+    </div></div>
+  )
+}
+
+function Promo({ t }) {
+  const S = t.promo; const imgs = [IMG.team, IMG.hero, IMG.careers, IMG.classroom]
+  const [i, setI] = useState(0); const [pause, setPause] = useState(false); const x0 = useRef(null)
+  const reduce = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  useEffect(() => { if (pause || reduce) return; const id = setTimeout(() => setI((v) => (v + 1) % S.length), 5500); return () => clearTimeout(id) }, [i, pause, reduce, S.length])
+  const go = (d) => setI((v) => (v + d + S.length) % S.length)
+  return (
+    <section className="promo" aria-roledescription="carousel" aria-label="PASCAL">
+      <div className="wrap">
+        <div className="pr" onMouseEnter={() => setPause(true)} onMouseLeave={() => setPause(false)} onFocus={() => setPause(true)} onBlur={() => setPause(false)}
+          onTouchStart={(e) => { x0.current = e.touches[0].clientX }} onTouchEnd={(e) => { if (x0.current !== null) { const dx = e.changedTouches[0].clientX - x0.current; if (Math.abs(dx) > 50) go(dx < 0 ? 1 : -1); x0.current = null } }}>
+          {S.map((sl, n) => (
+            <div key={n} className={`ps ${n === i ? 'on' : ''}`} aria-hidden={n !== i} style={{ backgroundImage: `linear-gradient(95deg,rgba(7,26,66,.92) 35%,rgba(7,26,66,.2)),url(${imgs[n]})` }}>
+              <div className="pt"><span className="ptag">{sl.tag}</span><h3>{sl.title}</h3><p>{sl.text}</p>
+                <a className="btn gold" tabIndex={n === i ? 0 : -1} href={sl.wa ? WA(t.hello) : sl.href} {...(sl.wa ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>{sl.wa && <WAIcon />} {sl.cta}</a></div>
+            </div>))}
+          <button className="pn l" aria-label={t.prev} onClick={() => go(-1)}>‹</button>
+          <button className="pn r" aria-label={t.next} onClick={() => go(1)}>›</button>
+          <div className="pd">{S.map((_, n) => <button key={n} className={n === i ? 'on' : ''} aria-label={`${t.slide} ${n + 1}`} onClick={() => setI(n)} />)}</div>
+          {!reduce && <span key={i + (pause ? 'p' : '')} className="pbar" style={{ animationPlayState: pause ? 'paused' : 'running' }} />}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function Hero({ t, lang }) {
   return (
     <section id="top" className="hero" style={{ backgroundImage: `linear-gradient(105deg,rgba(7,26,66,.95) 30%,rgba(7,26,66,.55)),url(${IMG.hero})` }}>
       <div className="wrap hero-in">
@@ -61,9 +97,9 @@ function Hero({ t }) {
           <div className="row"><a className="btn gold" href="#apply"><WAIcon /> {t.cta1}</a><a className="btn ghost" href="#courses">{t.cta2}</a></div>
           <div className="stats"><div><b>10</b><span>{t.stats[0]}</span></div><div><b>{SITE.seats}</b><span>{t.stats[1]}</span></div><div><b>EN·FR·RW·SW</b><span>{t.stats[2]}</span></div></div>
         </div>
-        <div className="hero-card"><img src={IMG.team} alt="PASCAL students in training" /><div className="chip">📍 {SITE.place}</div></div>
+        <div className="hero-card"><img src={IMG.team} alt="PASCAL students in training" /><div className="chip">📍 {SITE.places.map((p) => p.short).join(' · ')}</div></div>
       </div>
-      <div className="ribbon">LEARN · PRACTICE · SUCCEED · LEARN · PRACTICE · SUCCEED</div>
+      <Ticker t={t} lang={lang} />
     </section>
   )
 }
@@ -125,16 +161,37 @@ function Gallery({ t }) {
 function Stories({ t, lang }) {
   if (!TESTIMONIALS.length) return null
   return (
-    <section id="stories" className="sec alt"><div className="wrap">
-      <Reveal><h2>{t.storiesT}</h2><p className="lead">{t.storiesS}</p></Reveal>
-      <div className="grid st">{TESTIMONIALS.map((p) => {
-        const c = COURSES.find((x) => x.id === p.course); const ini = p.name.split(' ').map((w) => w[0]).slice(0, 2).join('').toUpperCase()
-        return (<Reveal key={p.name}><figure className="story">
-          <blockquote>“{p.quote[lang] || p.quote.en}”</blockquote>
-          <figcaption>{p.photo ? <img src={p.photo} alt={p.name} loading="lazy" /> : <span className="av">{ini}</span>}<div><b>{p.name}</b>{c && <small>{c[lang]}</small>}</div></figcaption>
-        </figure></Reveal>)})}</div>
-    </div></section>
+    <section id="stories" className="sec alt stories">
+      <div className="wrap"><Reveal><h2>{t.storiesT}</h2><p className="lead">{t.storiesS}</p></Reveal></div>
+      <div className="marq" tabIndex={0} aria-label={t.storiesT}><div className="mt">
+        {[0, 1].map((k) => (
+          <div className="ms" key={k} aria-hidden={k === 1 ? 'true' : undefined}>
+            {TESTIMONIALS.map((p) => {
+              const c = COURSES.find((x) => x.id === p.course); const ini = p.name.split(' ').map((w) => w[0]).slice(0, 2).join('').toUpperCase()
+              return (
+                <figure className="story" key={p.name}>
+                  <span className="qm" aria-hidden="true">“</span>
+                  <blockquote>{p.quote[lang] || p.quote.en}</blockquote>
+                  <figcaption>{p.photo ? <img src={p.photo} alt={k === 0 ? p.name : ''} loading="lazy" /> : <span className="av">{ini}</span>}
+                    <div><b>{p.name}</b>{c && <small>{c[lang]}</small>}{p.sample && <em className="smp">{t.sample}</em>}</div></figcaption>
+                </figure>)
+            })}
+          </div>))}
+      </div></div>
+    </section>
   )
+}
+
+function TopBtn({ t }) {
+  const [v, setV] = useState(false)
+  useEffect(() => { const h = () => setV(window.scrollY > 700); h(); window.addEventListener('scroll', h, { passive: true }); return () => window.removeEventListener('scroll', h) }, [])
+  return v ? <button className="to-top" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} aria-label={t.top} title={t.top}>↑</button> : null
+}
+
+const SOC = {
+  Instagram: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none" /></svg>,
+  Facebook: <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 8h3V4h-3a4 4 0 0 0-4 4v2H7v4h3v8h4v-8h3l1-4h-4V8.5c0-.3.2-.5.5-.5Z" /></svg>,
+  TikTok: <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.5 3c.3 2.4 1.7 4 4 4.2v3.2c-1.5 0-2.9-.4-4-1.2v6.3a6.2 6.2 0 1 1-6.2-6.2c.3 0 .6 0 .9.1v3.3a3 3 0 1 0 2.1 2.8V3h3.2Z" /></svg>,
 }
 
 function FAQ({ t }) {
@@ -206,15 +263,18 @@ function Apply({ t, lang, preset }) {
 }
 
 function Contact({ t }) {
+  const [loc, setLoc] = useState(0)
   return (
     <section id="contact" className="sec"><div className="wrap contact">
       <Reveal><h2>{t.contactT}</h2><p className="lead">“{t.quote}”</p></Reveal>
       <div className="cc">
-        <div><span>📍 {t.loc}</span><b>{SITE.place}</b><a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(SITE.place)}`} target="_blank" rel="noopener noreferrer">{t.maps} →</a></div>
+        <div><span>📍 {t.loc}</span>{SITE.places.map((p) => <p key={p.short} className="loc"><b>{p.short}</b><a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.full)}`} target="_blank" rel="noopener noreferrer">{t.maps} →</a></p>)}</div>
         <div><span>📞 {t.call}</span>{SITE.phones.map(([a, b]) => <a key={b} href={`tel:${b}`}><b>{a}</b></a>)}</div>
         <div><span>💬 WhatsApp</span><a href={WA()} target="_blank" rel="noopener noreferrer"><b>{SITE.whatsapp.replace(/^250(\d{3})(\d{3})(\d{3})$/, '0$1 $2 $3')}</b></a></div>
       </div>
-      <Reveal><h3 className="mapT">{t.mapT}</h3><div className="map"><iframe title="PASCAL Academy map" loading="lazy" referrerPolicy="no-referrer-when-downgrade" src={`https://www.google.com/maps?q=${encodeURIComponent(SITE.place)}&output=embed`} /></div></Reveal>
+      <Reveal><h3 className="mapT">{t.mapT}</h3>
+        <div className="mapTabs" role="tablist">{SITE.places.map((p, n) => <button key={p.short} role="tab" aria-selected={n === loc} className={n === loc ? 'on' : ''} onClick={() => setLoc(n)}>📍 {p.short}</button>)}</div>
+        <div className="map"><iframe key={loc} title={`PASCAL Academy – ${SITE.places[loc].short}`} loading="lazy" referrerPolicy="no-referrer-when-downgrade" src={`https://www.google.com/maps?q=${encodeURIComponent(SITE.places[loc].full)}&output=embed`} /></div></Reveal>
     </div></section>
   )
 }
@@ -226,14 +286,20 @@ export default function App() {
     return n || 'en'
   })
   const [preset, setPreset] = useState({})
-  const t = T[lang]
+  const t = { ...T[lang], ...EXTRA[lang] }
   useEffect(() => { document.documentElement.lang = lang; try { localStorage.setItem('pascal-lang', lang) } catch {} }, [lang])
   const pick = (id) => { setPreset({ id, n: Date.now() }); document.getElementById('apply')?.scrollIntoView({ behavior: 'smooth' }) }
   return (
     <>
-      <Nav t={t} lang={lang} setLang={setLang} /><Hero t={t} />
-      <main><Courses t={t} lang={lang} onPick={pick} /><Why t={t} /><Gallery t={t} /><Stories t={t} lang={lang} /><FAQ t={t} /><Apply t={t} lang={lang} preset={preset} /><Contact t={t} /></main>
-      <footer className="foot"><div className="wrap"><img src={IMG.logo} alt="" /><p>© {new Date().getFullYear()} PASCAL Practical Skills &amp; Hospitality Academy · {t.rights}</p><small>{t.tagline}</small></div></footer>
+      <Nav t={t} lang={lang} setLang={setLang} /><Hero t={t} lang={lang} />
+      <main><Promo t={t} /><Courses t={t} lang={lang} onPick={pick} /><Why t={t} /><Gallery t={t} /><Stories t={t} lang={lang} /><FAQ t={t} /><Apply t={t} lang={lang} preset={preset} /><Contact t={t} /></main>
+      <footer className="foot"><div className="wrap">
+        <a href="#top" className="flogo" aria-label={t.nav[0]}><img src={IMG.logoFull} alt="PASCAL – Practical Skills & Hospitality Academy" /></a>
+        <p className="faddr">📍 {SITE.places.map((p) => p.short).join(' · ')}</p>
+        <div className="soc">{SITE.social.map(([n, u]) => <a key={n} href={u} target="_blank" rel="noopener noreferrer" aria-label={n}>{SOC[n]}<span>{n}</span></a>)}</div>
+        <p>© {new Date().getFullYear()} PASCAL Practical Skills &amp; Hospitality Academy · {t.rights}</p><small>{t.tagline}</small>
+      </div></footer>
+      <TopBtn t={t} />
       <a className="wa-fab" href={WA(t.hello)} target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp"><WAIcon /></a>
     </>
   )

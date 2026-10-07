@@ -19,3 +19,13 @@ Pure React + Vite (no UI libraries). Multilingual: English, Kinyarwanda, França
 - English + Kinyarwanda texts and course names: `src/data.js`. French + Kiswahili texts: `src/i18n-extra.js`.
 - To add another language: add its code to `LANGS` in `src/data.js`, add a full translation object to `T`, and add `xx:` names + `pts.xx` to every course.
 - Applications sent to WhatsApp always use English field labels so the admissions team reads them consistently; the message also notes the applicant's language.
+
+## v1.3 – animations, Home button, student stories, social links
+- Moving gold ticker under the hero and an auto-sliding promo banner (pauses on hover, swipe/arrows/dots): texts in `src/extra.js`, images chosen in `Promo` (`src/App.jsx`).
+- Home button in the menu + "back to top" button. Animations respect "reduce motion" settings.
+- **Student stories are SAMPLES.** Replace them in `src/testimonials.js` with real students (with permission) and real photos in `src/assets/testimonials/`. Entries without `sample: true` lose the "Sample" tag automatically.
+- Social links (Instagram, Facebook, TikTok) are in `SITE.social` in `src/data.js` and shown in the footer.
+
+## v1.4 – locations & footer logo
+- Locations (Nyabyondo, Rulindo + Kacyiru, Kigali) are in `SITE.places` in `src/data.js`; add/edit there and the hero, contact cards, map tabs and footer update together.
+- Footer uses the full-colour logo (`src/assets/img/logo-footer.png`) on a white card.

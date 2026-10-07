@@ -1,17 +1,28 @@
 import logo from './assets/img/logo-emblem.png'
+import logoFull from './assets/img/logo-footer.png'
 import hero from './assets/img/hero-training.jpg'
 import team from './assets/img/team-practical.jpg'
 import careers from './assets/img/team-careers.jpg'
 import office from './assets/img/office.jpg'
 import classroom from './assets/img/classroom.jpg'
 const im = (n) => new URL(`./assets/img/c-${n}.jpg`, import.meta.url).href
-export const IMG = { logo, hero, team, careers, office, classroom }
+export const IMG = { logo, logoFull, hero, team, careers, office, classroom }
 
 // ✏️ Change these in one place
 export const SITE = {
   whatsapp: import.meta.env.VITE_WHATSAPP_NUMBER || '250788698167',
   phones: [['0789 649 089', '+250789649089'], ['0788 698 167', '+250788698167']],
   place: 'Nyabyondo, Rulindo, Rwanda', seats: 10,
+  // ✏️ All academy locations (hero, contact, map tabs, footer)
+  places: [
+    { short: 'Nyabyondo, Rulindo', full: 'Nyabyondo, Rulindo, Rwanda' },
+    { short: 'Kacyiru, Kigali', full: 'Kacyiru, Gasabo, Kigali, Rwanda' },
+  ],
+  social: [
+    ['Instagram', 'https://www.instagram.com/pkpracticalacademy/'],
+    ['Facebook', 'https://web.facebook.com/profile.php?id=61594959548481'],
+    ['TikTok', 'https://www.tiktok.com/@pkacademy2'],
+  ],
 }
 // ✏️ Fill in REAL values per course id; empty = not shown. Example: juice: { duration: '3 months', fee: '50,000 RWF' }
 export const COURSE_INFO = {}
@@ -137,7 +148,7 @@ export const T = {
     tap: 'Click to enlarge', close: 'Close', prev: 'Previous', next: 'Next', storiesT: 'Student Stories', storiesS: 'Hear from our students and graduates.', mapT: 'Find us on the map',
     faqT: 'Frequently Asked Questions', faqS: 'Quick answers before you apply.',
     faqs: [
-      ['Where is PASCAL Academy located?', 'We are in Nyabyondo, Rulindo, Rwanda. You can find us on the map in the Contact section.'],
+      ['Where is PASCAL Academy located?', 'We are in Nyabyondo (Rulindo) and Kacyiru (Kigali), Rwanda. You can find both on the map in the Contact section.'],
       ['How do I apply?', 'Fill in the application form on this page and press the WhatsApp button. Your application opens in WhatsApp, ready to send to our admissions team, who will reply to you.'],
       ['How many students are in the first intake?', 'The first intake is limited to only 10 students, so we encourage you to register early.'],
       ['Which courses do you offer?', 'Hospitality & Customer Service, Food & Beverage Service, Juice Making, Soap Making, Computer, Photography, Hairdressing, Languages, Pastry, and Life Skills & Personal Development. You can choose up to 3 on the form.'],
@@ -160,7 +171,7 @@ export const T = {
     tap: 'Kanda kugira ngo ubone neza', close: 'Funga', prev: 'Iyabanje', next: 'Ikurikira', storiesT: 'Ubuhamya bw’abanyeshuri', storiesS: 'Umva abanyeshuri bacu n’abarangije.', mapT: 'Aho tuherereye ku ikarita',
     faqT: 'Ibibazo bikunze kubazwa', faqS: 'Ibisubizo byihuse mbere yo kwiyandikisha.',
     faqs: [
-      ['PASCAL Academy iherereye he?', 'Turi i Nyabyondo, Rulindo, mu Rwanda. Ushobora kutubona ku ikarita mu gice cyo Twandikire.'],
+      ['PASCAL Academy iherereye he?', 'Turi i Nyabyondo (Rulindo) no i Kacyiru (Kigali), mu Rwanda. Ushobora kuduhasanga ku ikarita mu gice cyo Twandikire.'],
       ['Nakwiyandikisha nte?', 'Uzuza ifishi iri kuri uru rubuga ukande buto ya WhatsApp. Ubusabe bwawe bufungurwa kuri WhatsApp bwiteguye koherezwa, maze tukwandikire.'],
       ['Itangira rya mbere rizakira abanyeshuri bangahe?', 'Itangira rya mbere ni abanyeshuri 10 gusa, bityo wiyandikishe hakiri kare.'],
       ['Ni ayahe masomo mutanga?', 'Kwakira Abashyitsi na Serivisi, Serivisi y’Ibiribwa n’Ibinyobwa, Gukora Juice, Gukora Isabune, Mudasobwa, Gufata Amafoto, Gutunganya Imisatsi, Indimi, Pastry, n’Ubumenyi bw’Ubuzima. Ushobora guhitamo 3 ku ifishi.'],
